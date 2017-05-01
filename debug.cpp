@@ -5,7 +5,7 @@
 
 #include <amxxce>
 
-new const DBG_INFO[] = "| === |		Debug Log Called here		| === |";
+new const DBG_INFO[] = "+++	[ Map: %s ] Debug Log Message [ Current Time: %i:%i:%i ]	+++";
 
 #define DEBUG_FAIL(%1)		( set_fail_state(%1) )
 
@@ -21,21 +21,16 @@ new const DBG_INFO[] = "| === |		Debug Log Called here		| === |";
 
 stock DEBUG_LOG( Message[] )
 {
-	new szMap[22];	
+	new szMap[30];	
 	get_mapname( szMap, cm(szMap) );
-
-	new iTimeleft = get_timeleft() / 60;
 
 	new iHour, iMinutes, iSeconds;
 	time( iHour, iMinutes, iSeconds );
 
-	new Year, Month, Day;
-	date( Year, Month, Day );
-
-	client_print( 0, print_console, DBG_INFO );
-	client_print( 0, print_console, "[Map: %s] [Timeleft: %iminutes] [Time: %i:%i:%i] [ Date: %i.%i.%i ]", szMap, iTimeleft, iHour, iMinutes, iSeconds, Year, Month, Day );
+	client_print( 0, print_console, DBG_INFO , szMap, iHour, iMinutes, iSeconds );
 	client_print( 0, print_console, Message );
 
-	server_print( DBG_INFO );
-	server_print( "[Map: %s] [Timeleft: %iminutes] [Time: %i:%i:%i] [ Date: %i.%i.%i ]", szMap, iTimeleft, iHour, iMinutes, iSeconds, Year, Month, Day );
+	server_print( DBG_INFO , szMap, iHour, iMinutes, iSeconds );
 	server_print( Message );
+
+}
