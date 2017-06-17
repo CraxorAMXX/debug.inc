@@ -154,6 +154,7 @@ stock debug_log( iDebugLevel=0, const szMessage[] , any:... )
 *
 *
 */
+
 #define debug_cur_tick()		tickcount()
 #define debug_stop_tick(%0)		( %0 = tickcount() - %0 )
 #define debug_loop_fortick()		for( new x; x < 100000; x++ )
