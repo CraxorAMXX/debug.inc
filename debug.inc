@@ -24,15 +24,13 @@
 *
 *
 *
-*	DEBUG_OFF is closing automatcly the debug system if the value is set to '1'.
-*
-*	If you leave '1' all the functions will be empty functions, so, you can leave the functiosns in the plugin and re-compile, they won't be called.	
+*	If DEBUGS_LOGS_OFF are '1' then debug_log() function will become an empty function, so you can re-compile the plugin and the messages won't appear.	
 *
 *
 *	
 */
 
-#define DEBUG_OFF 0
+#define DEBUG_LOGS_OFF 0
 
 /*
 *
@@ -46,26 +44,10 @@
 static stock const szDebugFileLocation [] = "addons/amxmodx/data/Debugs.txt";
 
 
-/*
-*
-*
-*
-*
-*
-*
-*	here we check if DEBUG_OFF is bigger than 0 and defining all the functions as empty functions.
-*	In that way you can re-compile the plugin and leave the functions, they will be empty functions so they won't eat memory.
-*
-*
-*
-*
-*
-*/
+#if DEBUG_LOGS_OFF > 0
 
-#if DEBUG_OFF > 0
-
-	#define debug_log(%1)			debug_null()
-	debug_null(){}				/* Empty function */
+	#define debug_log(%1)	null_func()
+	null_func(){}
 
 #else
 
@@ -160,3 +142,46 @@ stock debug_log( iDebugLevel=0, const szMessage[] , any:... )
 }
 
 #endif
+
+
+/*
+*
+*
+*
+*
+*	Ticks() functions to compare CPU USAGE in time.
+*
+*
+*
+*/
+#define debug_cur_tick()		tickcount()
+#define debug_stop_tick(%0)		( %0 = tickcount() - %0 )
+#define debug_loop_fortick()		for( new x; x < 100000; x++ )
+
+
+/*
+*
+*
+*
+*	Compare Two values to see wich one is much faster.
+*
+*
+*	Return 2 if 'Tick2' value is faster.
+*	Return 1 if 'Tick1' value is faster.
+*
+*
+*
+*	Return 0 if none of the conditions is true ( in the most of cases, both are equals or ticks are not correct.
+*
+*
+*/
+stock debug_compare_ticks( Tick1, Tick2 )
+{
+	if ( Tick1 > Tick2 )
+		return 2;
+	else if( Tick2 > Tick1 )
+		return 1;
+	else
+		return 0;
+}
+		
